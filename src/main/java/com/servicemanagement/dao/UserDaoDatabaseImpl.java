@@ -31,7 +31,7 @@ public class UserDaoDatabaseImpl implements UserDao {
       ResultSet rs = statement.getGeneratedKeys();
       long customerId = rs.getLong(1);
 
-      if (result != 0)
+      if (result > 0)
         return "Customer Registered Successfully with Id " + customerId;
       else
         return "Failed to retrive customer id";

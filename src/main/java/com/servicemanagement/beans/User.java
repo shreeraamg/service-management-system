@@ -84,7 +84,6 @@ public class User {
 
   @Override
   public String toString() {
-    // return id + "|" + name + "|" + emailId + "|" + mobile + "|" + address;
-    return name + "|" + emailId + "|" + mobile + "|" + password + "|" + address;
+    return id + " | " + name + " | " + emailId + " | " + mobile + " | " + address;
   }
 }
