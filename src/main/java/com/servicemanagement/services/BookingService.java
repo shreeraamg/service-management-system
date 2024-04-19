@@ -15,6 +15,10 @@ public class BookingService {
     return bookingDao.createBooking(booking);
   }
 
+  public List<Booking> getAllBookings() {
+    return bookingDao.getAllBookings();
+  }
+
   public List<Vendor> getVendorsByServiceType(ServiceType serviceType) {
     return bookingDao.getVendorsByServiceType(serviceType);
   }
