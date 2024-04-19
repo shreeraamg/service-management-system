@@ -23,6 +23,10 @@ public class BookingService {
     return bookingDao.getBookingsByCustomer(customerId);
   }
 
+  public List<Booking> getBookingsByServiceType(ServiceType serviceType) {
+    return bookingDao.getBookingsByServiceType(serviceType);
+  }
+
   public List<Vendor> getVendorsByServiceType(ServiceType serviceType) {
     return bookingDao.getVendorsByServiceType(serviceType);
   }

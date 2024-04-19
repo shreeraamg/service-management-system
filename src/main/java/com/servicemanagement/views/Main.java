@@ -22,7 +22,8 @@ public class Main {
     User loggedInUser = userService.login("akash@gmail.com", "asdasd");
     // createBooking(bookingService, loggedInUser);
     // displayAllBookings(bookingService);
-    displayBookingsByCustomer(bookingService, 1000002);
+    // displayBookingsByCustomer(bookingService, 1000002);
+    // displayBookingsByServiceType(bookingService, ServiceType.AIR_CONDITIONER);
     // System.out.println(loggedInUser.toString());
   }
 
@@ -107,6 +108,24 @@ public class Main {
       sb.append(booking.getServiceType()).append(" | ");
       sb.append(booking.getVendor().getName()).append(" | ");
       sb.append(booking.getVendor().getPrice());
+
+      System.out.println(sb.toString());
+    }
+  }
+
+  public static void displayBookingsByServiceType(BookingService bookingService, ServiceType serviceType) {
+    List<Booking> bookings = bookingService.getBookingsByServiceType(serviceType);
+    System.out.println("ID | Date | Service Type | Vendor Name | Price | Customer Name | Mobile | Address");
+    for (Booking booking : bookings) {
+      StringBuilder sb = new StringBuilder();
+      sb.append(booking.getId()).append(" | ");
+      sb.append(booking.getDate()).append(" | ");
+      sb.append(booking.getServiceType()).append(" | ");
+      sb.append(booking.getVendor().getName()).append(" | ");
+      sb.append(booking.getVendor().getPrice()).append(" | ");
+      sb.append(booking.getCustomer().getName()).append(" | ");
+      sb.append(booking.getCustomer().getMobile()).append(" | ");
+      sb.append(booking.getCustomer().getAddress());
 
       System.out.println(sb.toString());
     }
