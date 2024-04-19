@@ -14,6 +14,7 @@ public class UserDaoDatabaseImpl implements UserDao {
   @Override
   public String addCustomer(User user) {
     Connection connection = null;
+
     try {
       connection = dbConnection.getConnection();
       String query = "INSERT INTO User (name, emailId, mobile, password, address, isAdmin) VALUES (?, ?, ?, ?, ?, ?);";
@@ -45,8 +46,20 @@ public class UserDaoDatabaseImpl implements UserDao {
   }
 
   @Override
-  public User loginUser(String emailId, String password) {
+  public User login(String emailId, String password) {
     return null;
+  }
+
+  @Override
+  public User getCustomerByMobile(String mobile) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getCustomerByMobile'");
+  }
+
+  @Override
+  public User getCustomerById(long id) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getCustomerById'");
   }
 
 }

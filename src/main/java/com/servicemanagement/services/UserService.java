@@ -15,7 +15,7 @@ public class UserService {
     return userDao.addCustomer(user);
   }
 
-  public User loginUser(String emailId, String password) {
-    return userDao.loginUser(emailId, password);
+  public User login(String emailId, String password) {
+    return userDao.login(emailId, password);
   }
 }
