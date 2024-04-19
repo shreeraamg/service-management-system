@@ -94,7 +94,45 @@ public class BookingDaoDatabaseImpl implements BookingDao {
 
   @Override
   public List<Booking> getBookingsByCustomer(long customerId) {
-    throw new UnsupportedOperationException("Unimplemented method 'getBookingsByCustomer'");
+    Connection connection = null;
+
+    try {
+      connection = dbConnection.getConnection();
+      String query = "SELECT b.id, b.date, b.serviceType, b.status, p.id, p.name, p.price FROM Booking b JOIN Providers p ON b.vendorId = p.id WHERE b.customerId = ?;";
+
+      PreparedStatement statement = connection.prepareStatement(query);
+      statement.setLong(1, customerId);
+
+      ResultSet rs = statement.executeQuery();
+
+      List<Booking> bookings = new ArrayList<>();
+      while (rs.next()) {
+        Booking booking = new Booking();
+
+        Vendor vendor = new Vendor();
+        vendor.setId(rs.getInt(5));
+        vendor.setName(rs.getString(6));
+        vendor.setServiceType(ServiceType.valueOf(rs.getString(3)));
+        vendor.setPrice(rs.getInt(7));
+        booking.setVendor(vendor);
+
+        booking.setCustomer(null);
+
+        booking.setId(rs.getInt(1));
+        booking.setDate(LocalDate.parse(rs.getString(2)));
+        booking.setServiceType(ServiceType.valueOf(rs.getString(3)));
+        booking.setStatus(Status.valueOf(rs.getString(4)));
+
+        bookings.add(booking);
+      }
+
+      return bookings;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    } finally {
+      dbConnection.closeConnection(connection);
+    }
   }
 
   @Override
