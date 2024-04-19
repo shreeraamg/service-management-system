@@ -24,9 +24,10 @@ public class Main {
     System.out.println(loggedInUser.toString());
     // createBooking(bookingService, loggedInUser);
     // displayAllBookings(bookingService);
-    // displayBookingsByCustomer(bookingService, 1000002);
+    displayBookingsByCustomer(bookingService, 1000002);
     // displayBookingsByServiceType(bookingService, ServiceType.AIR_CONDITIONER);
     // updateBookingDate(bookingService, loggedInUser);
+    // cancelBooking(bookingService, loggedInUser);
     // System.out.println(loggedInUser.toString());
   }
 
@@ -94,6 +95,7 @@ public class Main {
       sb.append(booking.getId()).append(" | ");
       sb.append(booking.getDate()).append(" | ");
       sb.append(booking.getServiceType()).append(" | ");
+      sb.append(booking.getStatus()).append(" | ");
       sb.append(booking.getVendor().getName()).append(" | ");
       sb.append(booking.getVendor().getPrice()).append(" | ");
       sb.append(booking.getCustomer().getName()).append(" | ");
@@ -112,6 +114,7 @@ public class Main {
       sb.append(booking.getId()).append(" | ");
       sb.append(booking.getDate()).append(" | ");
       sb.append(booking.getServiceType()).append(" | ");
+      sb.append(booking.getStatus()).append(" | ");
       sb.append(booking.getVendor().getName()).append(" | ");
       sb.append(booking.getVendor().getPrice());
 
@@ -189,6 +192,39 @@ public class Main {
       e.printStackTrace();
       return;
     }
+  }
 
+  public static void cancelBooking(BookingService bookingService, User loggedInUser) {
+    System.out.println("Press the corresponding number to cancel the service");
+
+    List<Booking> bookings = bookingService.getBookingsByCustomer(loggedInUser.getId());
+    for (int i = 0; i < bookings.size(); i++) {
+      System.out.println(i + 1 + " | " + bookings.get(i).getDate() + " | "
+          + bookings.get(i).getServiceType() + " | " + bookings.get(i).getStatus());
+    }
+
+    int bookingToCancelNumber = sc.nextInt();
+    if (bookingToCancelNumber > bookings.size() || bookingToCancelNumber <= 0) {
+      System.out.println("Sorry! You didn't pick a Valid Booking");
+      return;
+    }
+    Booking bookingToCancel = bookings.get(bookingToCancelNumber - 1);
+
+    if (bookingToCancel.getStatus() == Status.CANCELLED || bookingToCancel.getStatus() == Status.COMPLETED) {
+      System.out.println("Sorry! You can't cancel this booking");
+      return;
+    }
+
+    LocalDate today = LocalDate.now();
+    if (bookingToCancel.getDate().isBefore(today)) {
+      System.out.println("Sorry! You can't cancel this booking");
+      return;
+    }
+
+    int result = bookingService.cancelBooking(bookingToCancel.getId());
+    if (result == 0)
+      System.out.println("Something went wrong Please try again.");
+    else
+      System.out.println("Booking Cancelled");
   }
 }

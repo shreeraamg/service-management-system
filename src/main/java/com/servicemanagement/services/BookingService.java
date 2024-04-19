@@ -31,6 +31,10 @@ public class BookingService {
     return bookingDao.updateBookingDate(bookingId, newDate);
   }
 
+  public int cancelBooking(int bookingId) {
+    return bookingDao.cancelBooking(bookingId);
+  }
+
   public List<Vendor> getVendorsByServiceType(ServiceType serviceType) {
     return bookingDao.getVendorsByServiceType(serviceType);
   }

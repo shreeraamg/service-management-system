@@ -214,7 +214,24 @@ public class BookingDaoDatabaseImpl implements BookingDao {
 
   @Override
   public int cancelBooking(int bookingId) {
-    throw new UnsupportedOperationException("Unimplemented method 'cancelBooking'");
+    Connection connection = null;
+
+    try {
+      connection = dbConnection.getConnection();
+      String query = "UPDATE Booking SET status = 'CANCELLED' WHERE id = ?";
+
+      PreparedStatement statement = connection.prepareStatement(query);
+      statement.setInt(1, bookingId);
+
+      int result = statement.executeUpdate();
+
+      return result;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return 0;
+    } finally {
+      dbConnection.closeConnection(connection);
+    }
   }
 
   @Override
