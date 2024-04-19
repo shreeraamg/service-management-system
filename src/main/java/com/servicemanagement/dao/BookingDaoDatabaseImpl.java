@@ -186,7 +186,25 @@ public class BookingDaoDatabaseImpl implements BookingDao {
 
   @Override
   public int updateBookingDate(int bookingId, String newDate) {
-    throw new UnsupportedOperationException("Unimplemented method 'updateBookingDate'");
+    Connection connection = null;
+
+    try {
+      connection = dbConnection.getConnection();
+      String query = "UPDATE Booking SET date = ? WHERE id = ?;";
+
+      PreparedStatement statement = connection.prepareStatement(query);
+      statement.setString(1, newDate);
+      statement.setInt(2, bookingId);
+
+      int result = statement.executeUpdate();
+
+      return result;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return 0;
+    } finally {
+      dbConnection.closeConnection(connection);
+    }
   }
 
   @Override
