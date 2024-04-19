@@ -20,15 +20,231 @@ public class Main {
     UserService userService = new UserService();
     BookingService bookingService = new BookingService();
 
-    User loggedInUser = userService.login("akash@gmail.com", "asdasd");
-    System.out.println(loggedInUser.toString());
-    // createBooking(bookingService, loggedInUser);
-    // displayAllBookings(bookingService);
-    displayBookingsByCustomer(bookingService, 1000002);
-    // displayBookingsByServiceType(bookingService, ServiceType.AIR_CONDITIONER);
-    // updateBookingDate(bookingService, loggedInUser);
-    // cancelBooking(bookingService, loggedInUser);
-    // System.out.println(loggedInUser.toString());
+    User loggedInUser = null;
+
+    printOptions();
+    int choice = sc.nextInt();
+    while (true) {
+      sc.nextLine();
+      switch (choice) {
+        case 1:
+          addCustomer(userService);
+          break;
+        case 2:
+          loggedInUser = login(userService);
+          if (loggedInUser == null)
+            System.out.println("Invalid Credentials");
+          else {
+            if (loggedInUser.isAdmin()) {
+              System.out.println("Logged in as " + loggedInUser.getName());
+              boolean isAdminLoggedIn = true;
+              printAdminOptions();
+
+              while (isAdminLoggedIn) {
+                int adminChoice = sc.nextInt();
+                sc.nextLine();
+                switch (adminChoice) {
+                  case 1:
+                    displayAllBookings(bookingService);
+                    break;
+                  case 2:
+                    System.out.println("Enter Customer Mobile");
+                    String mobile = sc.nextLine();
+                    User customerWithGivenMobile = userService.getCustomerByMobile(mobile);
+                    if (customerWithGivenMobile == null)
+                      System.out.println("No Record Found");
+                    else
+                      System.out.println(customerWithGivenMobile.toString());
+                    break;
+                  case 3:
+                    System.out.println("Enter Customer Id");
+                    long customerId = sc.nextLong();
+                    User customerWithGivenId = userService.getCustomerById(customerId);
+                    if (customerWithGivenId == null)
+                      System.out.println("No Record Found");
+                    else
+                      System.out.println(customerWithGivenId.toString());
+                    break;
+                  case 4:
+                    displayServiceTypeOptions();
+                    int serviceTypeNumber = sc.nextInt();
+                    ServiceType serviceType = switch (serviceTypeNumber) {
+                      case 1 -> ServiceType.AIR_CONDITIONER;
+                      case 2 -> ServiceType.TELEVISION;
+                      case 3 -> ServiceType.WASHING_MACHINE;
+                      case 4 -> ServiceType.REFRIGERATOR;
+                      default -> null;
+                    };
+                    if (serviceType == null) {
+                      System.err.println("Sorry! You have not picked a valid service type.");
+                      break;
+                    }
+                    displayBookingsByServiceType(bookingService, serviceType);
+                    break;
+                  case 5:
+                    System.out.println("Enter Customer Id");
+                    long customerIdToGetBookings = sc.nextLong();
+                    displayBookingsByCustomer(bookingService, customerIdToGetBookings);
+                    break;
+                  case 0:
+                    isAdminLoggedIn = false;
+                    break;
+                  default:
+                    System.out.println("Please enter a valid choice");
+                    break;
+                }
+                if (isAdminLoggedIn) {
+                  printAdminOptions();
+                }
+              }
+            } else if (!loggedInUser.isAdmin()) {
+              System.out.println("Logged in as " + loggedInUser.getName());
+              boolean isCustomerLoggedIn = true;
+              printCustomerOptions();
+
+              while (isCustomerLoggedIn) {
+                int customerChoice = sc.nextInt();
+                sc.nextLine();
+                switch (customerChoice) {
+                  case 1:
+                    createBooking(bookingService, loggedInUser);
+                    break;
+                  case 2:
+                    displayBookingsByCustomer(bookingService, loggedInUser.getId());
+                    break;
+                  case 3:
+                    cancelBooking(bookingService, loggedInUser);
+                    break;
+                  case 4:
+                    updateBookingDate(bookingService, loggedInUser);
+                    break;
+                  case 5:
+                    updateBookingVendor(bookingService, loggedInUser);
+                    break;
+                  case 6:
+                    User user = userService.getCustomerById(loggedInUser.getId());
+                    if (user == null) {
+                      System.out.println("Unable to get Profile Details. Please try later");
+                    } else {
+                      System.out.println(user);
+                    }
+                    break;
+                  case 7:
+                    updateProfile(userService, loggedInUser);
+                    break;
+                  case 0:
+                    isCustomerLoggedIn = false;
+                    break;
+                  default:
+                    System.out.println("Please enter a valid choice");
+                    break;
+                }
+                if (isCustomerLoggedIn)
+                  printCustomerOptions();
+              }
+            }
+          }
+          break;
+        case 0:
+          loggedInUser = null;
+          System.out.println("Thankyou for using Service Management System");
+          System.exit(1);
+        default:
+          System.out.println("Please Enter a valid Option");
+          break;
+      }
+      printOptions();
+      choice = sc.nextInt();
+    }
+  }
+
+  public static void printOptions() {
+    System.out.println("----------------------------------------");
+    System.out.println("Press 1 to Register");
+    System.out.println("Press 2 to Login");
+    System.out.println("Press 0 to Exit");
+    System.out.println("----------------------------------------");
+  }
+
+  public static void printAdminOptions() {
+    System.out.println("----------------------------------------");
+    System.out.println("Press 1 to View All Bookings");
+    System.out.println("Press 2 to Search customer by Mobile Number");
+    System.out.println("Press 3 to Search customer by Id");
+    System.out.println("Press 4 to Search bookings by Service Type");
+    System.out.println("Press 0 to logout");
+    System.out.println("----------------------------------------");
+  }
+
+  public static void printCustomerOptions() {
+    System.out.println("----------------------------------------");
+    System.out.println("Press 1 to Create a Booking");
+    System.out.println("Press 2 to view all my Bookings");
+    System.out.println("Press 3 to Cancel a Booking");
+    System.out.println("Press 4 to Change date for a Booking");
+    System.out.println("Press 5 to Change vendor for a Booking");
+    System.out.println("Press 6 to View my Profile");
+    System.out.println("Press 7 to Update my Profile");
+    System.out.println("Press 0 to logout");
+    System.out.println("----------------------------------------");
+  }
+
+  public static void addCustomer(UserService userService) {
+    System.out.println("Enter your name");
+    String name = sc.nextLine();
+    System.out.println("Enter your Email");
+    String emailId = sc.nextLine();
+    System.out.println("Enter your Mobile Number");
+    String mobile = sc.nextLine();
+    System.out.println("Enter your Address");
+    String address = sc.nextLine();
+    System.out.println("Enter your Password");
+    String password = sc.nextLine();
+
+    int result = userService.addCustomer(new User(name, emailId, mobile, password, address));
+    if (result == 0)
+      System.out.println("Something went wrong Please try again.");
+    else
+      System.out.println("Customer registered successfully.");
+  }
+
+  public static User login(UserService userService) {
+    System.out.println("Enter your Email");
+    String emailId = sc.nextLine();
+    System.out.println("Enter your Password");
+    String password = sc.nextLine();
+
+    return userService.login(emailId, password);
+  }
+
+  public static void updateProfile(UserService userService, User loggedInUser) {
+    System.out.println("Press 1 to Update Name");
+    System.out.println("Press 2 to Update Email");
+    System.out.println("Press 3 to Update Mobile");
+    System.out.println("Press 4 to Update Address");
+
+    int fieldToUpdateNumber = sc.nextInt();
+    sc.nextLine();
+    String fieldToUpdate = switch (fieldToUpdateNumber) {
+      case 1 -> "name";
+      case 2 -> "emailId";
+      case 3 -> "mobile";
+      case 4 -> "address";
+      default -> null;
+    };
+    if (fieldToUpdate == null) {
+      System.out.println("Sorry! You didn't pick the right field");
+      return;
+    }
+
+    System.out.println("Enter new " + fieldToUpdate);
+    String newValue = sc.nextLine();
+    int result = userService.updateProfile(fieldToUpdate, newValue, loggedInUser.getId());
+    if (result == 0)
+      System.out.println("Something went wrong Please try again.");
+    else {
+      System.out.println("Profile Successfullt updated.");
+    }
   }
 
   public static void displayServiceTypeOptions() {
@@ -192,6 +408,57 @@ public class Main {
       e.printStackTrace();
       return;
     }
+  }
+
+  public static void updateBookingVendor(BookingService bookingService, User loggedInUser) {
+    System.out.println("Press the corresponding number to update vendor for a service");
+
+    List<Booking> bookings = bookingService.getBookingsByCustomer(loggedInUser.getId());
+    for (int i = 0; i < bookings.size(); i++) {
+      System.out.println(i + 1 + " | " + bookings.get(i).getDate() + " | "
+          + bookings.get(i).getServiceType() + " | " + bookings.get(i).getStatus());
+    }
+
+    int bookingToUpdateNumber = sc.nextInt();
+    if (bookingToUpdateNumber > bookings.size() || bookingToUpdateNumber <= 0) {
+      System.out.println("Sorry! You didn't pick a Valid Booking");
+      return;
+    }
+    Booking bookingToUpdate = bookings.get(bookingToUpdateNumber - 1);
+
+    if (bookingToUpdate.getStatus() == Status.CANCELLED || bookingToUpdate.getStatus() == Status.COMPLETED) {
+      System.out.println("You can't update date for this booking.");
+      return;
+    }
+
+    LocalDate today = LocalDate.now();
+    if (bookingToUpdate.getDate().isEqual(today) || bookingToUpdate.getDate().isBefore(today)) {
+      System.out.println("You can't update date for this booking.");
+      return;
+    }
+
+    System.out.println("Press the corresponding number to choose a vendor");
+    List<Vendor> vendors = bookingService.getVendorsByServiceType(bookingToUpdate.getServiceType());
+    for (int i = 0; i < vendors.size(); i++) {
+      System.out.println(i + 1 + " | " + vendors.get(i).getName() + " | " + vendors.get(i).getPrice());
+    }
+    int selectedVendorNumber = sc.nextInt();
+    if (selectedVendorNumber > vendors.size() || selectedVendorNumber <= 0) {
+      System.out.println("Sorry! You have not picked a valid vendor.");
+      return;
+    }
+    Vendor selectedVendor = vendors.get(selectedVendorNumber - 1);
+
+    if (selectedVendor.getName().equals(bookingToUpdate.getVendor().getName())) {
+      System.out.println("This is the already chosen vendor.");
+      return;
+    }
+
+    int result = bookingService.updateBookingVendor(bookingToUpdate.getId(), selectedVendor);
+    if (result == 0)
+      System.out.println("Something went wrong Please try again.");
+    else
+      System.out.println("Vendor Successfully Updated");
   }
 
   public static void cancelBooking(BookingService bookingService, User loggedInUser) {

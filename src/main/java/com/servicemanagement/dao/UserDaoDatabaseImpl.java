@@ -12,7 +12,7 @@ public class UserDaoDatabaseImpl implements UserDao {
   private DbConnection dbConnection = new DbConnection();
 
   @Override
-  public String addCustomer(User user) {
+  public int addCustomer(User user) {
     Connection connection = null;
 
     try {
@@ -29,20 +29,13 @@ public class UserDaoDatabaseImpl implements UserDao {
 
       int result = statement.executeUpdate();
 
-      ResultSet rs = statement.getGeneratedKeys();
-      long customerId = rs.getLong(1);
-
-      if (result > 0)
-        return "Customer Registered Successfully with Id " + customerId;
-      else
-        return "Failed to retrive customer id";
+      return result;
     } catch (SQLException e) {
       e.printStackTrace();
+      return 0;
     } finally {
       dbConnection.closeConnection(connection);
     }
-
-    return "Something went wrong please try again later";
   }
 
   @Override
@@ -83,12 +76,94 @@ public class UserDaoDatabaseImpl implements UserDao {
 
   @Override
   public User getCustomerByMobile(String mobile) {
-    throw new UnsupportedOperationException("Unimplemented method 'getCustomerByMobile'");
+    Connection connection = null;
+
+    try {
+      connection = dbConnection.getConnection();
+      String query = "SELECT * FROM User WHERE mobile = ?";
+
+      PreparedStatement statement = connection.prepareStatement(query);
+      statement.setString(1, mobile);
+
+      ResultSet rs = statement.executeQuery();
+
+      if (rs.next()) {
+        User user = new User();
+        user.setId(rs.getLong(1));
+        user.setName((rs.getString(2)));
+        user.setEmailId((rs.getString(3)));
+        user.setMobile((rs.getString(4)));
+        user.setPassword("");
+        user.setAddress(rs.getString(6));
+        user.setAdmin(rs.getInt(7) == 1);
+
+        return user;
+      }
+
+      return null;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    } finally {
+      dbConnection.closeConnection(connection);
+    }
   }
 
   @Override
   public User getCustomerById(long id) {
-    throw new UnsupportedOperationException("Unimplemented method 'getCustomerById'");
+    Connection connection = null;
+
+    try {
+      connection = dbConnection.getConnection();
+      String query = "SELECT * FROM User WHERE id = ?";
+
+      PreparedStatement statement = connection.prepareStatement(query);
+      statement.setLong(1, id);
+
+      ResultSet rs = statement.executeQuery();
+
+      if (rs.next()) {
+        User user = new User();
+        user.setId(rs.getLong(1));
+        user.setName((rs.getString(2)));
+        user.setEmailId((rs.getString(3)));
+        user.setMobile((rs.getString(4)));
+        user.setPassword("");
+        user.setAddress(rs.getString(6));
+        user.setAdmin(rs.getInt(7) == 1);
+
+        return user;
+      }
+
+      return null;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    } finally {
+      dbConnection.closeConnection(connection);
+    }
   }
 
+  @Override
+  public int updateProfile(String field, String updatedValue, long id) {
+    Connection connection = null;
+
+    try {
+      connection = dbConnection.getConnection();
+      String query = "UPDATE User SET " + field + " = ? WHERE id = ?";
+
+      PreparedStatement statement = connection.prepareStatement(query);
+      statement.setString(1, updatedValue);
+      statement.setLong(2, id);
+
+      int result = statement.executeUpdate();
+
+      return result;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return 0;
+    } finally {
+      dbConnection.closeConnection(connection);
+    }
+  }
 }
