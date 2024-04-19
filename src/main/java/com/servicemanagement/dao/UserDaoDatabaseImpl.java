@@ -47,18 +47,47 @@ public class UserDaoDatabaseImpl implements UserDao {
 
   @Override
   public User login(String emailId, String password) {
-    return null;
+    Connection connection = null;
+
+    try {
+      connection = dbConnection.getConnection();
+      String query = "SELECT * FROM User WHERE emailId = ? AND password = ?";
+
+      PreparedStatement statement = connection.prepareStatement(query);
+      statement.setString(1, emailId);
+      statement.setString(2, password);
+
+      ResultSet rs = statement.executeQuery();
+
+      if (rs.next()) {
+        User loggedInUser = new User();
+        loggedInUser.setId(rs.getLong(1));
+        loggedInUser.setName((rs.getString(2)));
+        loggedInUser.setEmailId((rs.getString(3)));
+        loggedInUser.setMobile((rs.getString(4)));
+        loggedInUser.setPassword("");
+        loggedInUser.setAddress(rs.getString(6));
+        loggedInUser.setAdmin(rs.getInt(7) == 1);
+
+        return loggedInUser;
+      }
+
+      return null;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    } finally {
+      dbConnection.closeConnection(connection);
+    }
   }
 
   @Override
   public User getCustomerByMobile(String mobile) {
-    // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'getCustomerByMobile'");
   }
 
   @Override
   public User getCustomerById(long id) {
-    // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'getCustomerById'");
   }
 
