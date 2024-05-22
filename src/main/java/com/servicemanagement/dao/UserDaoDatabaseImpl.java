@@ -145,16 +145,20 @@ public class UserDaoDatabaseImpl implements UserDao {
   }
 
   @Override
-  public int updateProfile(String field, String updatedValue, long id) {
+  public int updateProfile(User user) {
     Connection connection = null;
 
     try {
       connection = dbConnection.getConnection();
-      String query = "UPDATE User SET " + field + " = ? WHERE id = ?";
+      String query = "UPDATE User SET name = ?, emailId = ?, mobile = ?, address = ?, password = ? WHERE id = ?;";
 
       PreparedStatement statement = connection.prepareStatement(query);
-      statement.setString(1, updatedValue);
-      statement.setLong(2, id);
+      statement.setString(1, user.getName());
+      statement.setString(2, user.getEmailId());
+      statement.setString(3, user.getMobile());
+      statement.setString(4, user.getAddress());
+      statement.setString(5, user.getPassword());
+      statement.setLong(6, user.getId());
 
       int result = statement.executeUpdate();
 

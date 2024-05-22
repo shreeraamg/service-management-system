@@ -11,5 +11,5 @@ public interface UserDao {
 
   public User getCustomerById(long id);
 
-  public int updateProfile(String field, String updatedValue, long id);
+  public int updateProfile(User user);
 }

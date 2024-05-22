@@ -1,5 +1,6 @@
 package com.servicemanagement.services;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.servicemanagement.beans.Booking;
@@ -18,6 +19,10 @@ public class BookingService {
   public List<Booking> getAllBookings() {
     return bookingDao.getAllBookings();
   }
+  
+  public Booking getBookingById(int bookingId) {
+	  return bookingDao.getBookingById(bookingId);
+  }
 
   public List<Booking> getBookingsByCustomer(long customerId) {
     return bookingDao.getBookingsByCustomer(customerId);
@@ -25,6 +30,10 @@ public class BookingService {
 
   public List<Booking> getBookingsByServiceType(ServiceType serviceType) {
     return bookingDao.getBookingsByServiceType(serviceType);
+  }
+  
+  public int updateBooking(int bookingId, LocalDate date, int vendorId) {
+	  return bookingDao.updateBooking(bookingId, date, vendorId);
   }
 
   public int updateBookingDate(int bookingId, String newDate) {
@@ -38,8 +47,16 @@ public class BookingService {
   public int cancelBooking(int bookingId) {
     return bookingDao.cancelBooking(bookingId);
   }
+  
+  public List<Vendor> getAllVendors() {
+	return bookingDao.getAllVendors();
+  }
 
   public List<Vendor> getVendorsByServiceType(ServiceType serviceType) {
     return bookingDao.getVendorsByServiceType(serviceType);
+  }
+  
+  public Vendor getVendorById(int vendorId) {
+	return bookingDao.getVendorById(vendorId);
   }
 }
