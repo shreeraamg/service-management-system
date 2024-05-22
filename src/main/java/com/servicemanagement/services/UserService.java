@@ -12,6 +12,7 @@ public class UserService {
   }
 
   public int addCustomer(User user) {
+	// Implement Server Side Valiation
     return userDao.addCustomer(user);
   }
 
@@ -27,7 +28,7 @@ public class UserService {
     return userDao.getCustomerById(id);
   }
 
-  public int updateProfile(String field, String updatedValue, long id) {
-    return userDao.updateProfile(field, updatedValue, id);
+  public int updateProfile(User user) {
+    return userDao.updateProfile(User user);
   }
 }

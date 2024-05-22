@@ -9,8 +9,7 @@ public class User {
   private String address;
   private boolean isAdmin;
 
-  public User() {
-  }
+  public User() {}
 
   public User(String name, String emailId, String mobile, String password, String address) {
     this.name = name;

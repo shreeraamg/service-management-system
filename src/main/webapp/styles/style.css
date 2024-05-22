@@ -1,0 +1,272 @@
+@charset "ISO-8859-1";
+:root {
+  	--primary-color: #059669;
+  	--secondary-color: #e5e5e5;
+	--text-color: #3f3f46;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	color: var(--text-color);
+}
+  
+a {
+	text-decoration: none;
+	color: var(--text-color);
+}
+
+.logo {
+	font-weight: 600;	
+}
+
+.error {
+	color: #e11d48;
+}
+
+/* Button */
+.btn {
+	border: none;
+	outline: none;
+	padding: 8px 16px;
+	border-radius: 6px;
+	font-weight: 500;
+	cursor: pointer;
+}
+
+.primary-btn {
+  	background-color: var(--primary-color);
+	color: #fff;
+}
+
+.secondary-btn {
+	background-color: var(--secondary-color);
+	color: var(--text-color);
+}
+
+.danger-btn {
+	background-color: #e11d48;
+	color: #fff;
+	
+}
+
+.white-btn {
+	background-color: #fff;
+	border: 1px solid var(--primary-color);
+	color: var(--primary-color);
+}
+
+.primary-btn:hover,
+.secondary-btn:hover,
+.white-btn:hover,
+.danger-btn:hover {
+	opacity: 0.8;
+}
+
+/* Header & Navbar */
+.header {
+	height: 10vh;
+	border-bottom: 1px solid #a1a1aa;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 60px;
+}
+
+.header nav {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	column-gap: 16px;
+}
+
+/* Main */
+.admin-main {
+	height: calc(100vh - 10vh);
+	max-height: calc(100vh - 10vh);
+	overflow-y: auto;
+	display: flex;
+}
+
+/* Side bar */
+.sidebar {
+	width: 20%;
+	height: 100%;
+	background-color: #f4f4f5;
+	border-right: 1px solid #a1a1aa;
+	padding: 4px 0;
+}
+
+.side-heading-container {
+	display: flex;
+	align-items: center;
+	padding: 12px 8px;
+	column-gap: 12px;
+}
+
+.line {
+	height: 1px;
+	width: 100%;
+	background-color: #d1d5db;
+}
+
+.sidebar a {
+	height: 48px;
+	display: flex;
+	align-items: center;
+	transition: all;
+	padding: 0 12px;
+	font-weight: 500;
+}
+
+.sidebar a:hover {
+	background-color: var(--primary-color);
+	color: var(--secondary-color);
+}
+
+.main-content {
+	width: 100%;
+	height: calc(100vh - 10vh);
+	max-height: calc(100vh - 10vh);
+	overflow: auto;
+}
+
+.admin-container {
+	width: 90%;
+	margin: 20px auto;
+}
+
+.admin-container form {
+	display: flex;
+	margin: 16px 0;
+	gap: 24px;
+}
+
+.flex-container {
+	display: flex;
+	height: calc(100vh - 10vh);
+	justify-content: center;
+	align-items: center;
+}
+
+.form-container {
+	display: flex;
+	flex-direction: column;
+	width: 25%;
+	row-gap: 20px;
+}
+
+
+/* Input Elements */
+.input-element {
+	display: flex;
+	flex-direction: column;
+	row-gap: 4px;
+}
+
+.input-element input,
+.input-element select,
+input,
+#serviceType {
+	background-color: #e5e5e5;
+	outline: none;
+	border: none;
+	border-radius: 6px;
+	width: 100%;
+	padding: 10px;
+}
+
+.input-element input:focus,
+input:focus {
+	outline: 2px solid var(--primary-color);
+	outline-offset: 1px;
+}
+
+.home-page {
+	display: flex;
+	height: calc(100vh - 10vh);
+	justify-content: center;
+	align-items: center;
+	column-gap: 20px;
+}
+
+/* Table */
+table {
+	border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+	background-color: var(--secondary-color);
+}
+
+tr:hover {
+	background-color: #f3f4f6;
+}
+
+.vendor-radio {
+    display: flex;
+    align-items: center;
+}
+
+.vendor-radio input[type="radio"] {
+    margin-right: 10px;
+}
+
+.form-action {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+}
+
+/* Bookings */
+.container {
+	height: calc(100vh - 10vh);
+}
+
+.heading {
+	text-align: center;
+}
+
+.action-column {
+	display: flex;
+	align-items: center;
+	column-gap: 8px;
+}
+
+.modal {
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
+	border: 1px solid #ddd;
+	width: 40%;
+	border-radius: 6px;
+	row-gap: 12px;
+	box-shadow: 4px 4px 6px #424242;
+}
+
+.modal span {
+	display: flex;
+	width: 100%;
+	justify-content: flex-end;
+	gap: 8px;
+}
+
+.customer-details {
+	margin: 20px auto;
+}
+
+.admin-heading {
+	padding-bottom: 12px;
+}

@@ -6,8 +6,7 @@ public class Vendor {
   private ServiceType serviceType;
   private int price;
 
-  public Vendor() {
-  }
+  public Vendor() {}
 
   public Vendor(String name, ServiceType serviceType, int price) {
     this.id = 0;
